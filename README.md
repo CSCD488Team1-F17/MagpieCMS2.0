@@ -10,9 +10,9 @@ Client: Ginelle Hustrulid
 2. Navigate to C:\xampp\apache\conf\extra and open httpd-vhosts.conf, replace its contents with:
 
     <VirtualHost *:80>
-        DocumentRoot "<your-repository-directory>\public_html"
+        DocumentRoot "your-repository-directory\public_html"
         ServerName home.dev
-        <Directory "<your-repository-directory>\public_html">
+        <Directory "your-repository-directory\public_html">
             Allow from all
             Require all granted
             AllowOverride All
