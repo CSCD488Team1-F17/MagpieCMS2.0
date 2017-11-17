@@ -1,0 +1,107 @@
+body 
+{
+	height:100%;
+}
+
+body
+{
+    background: #40AAF2; 
+    background: -webkit-linear-gradient(bottom right, #4055F2, #50D2B4); 
+    background: -o-linear-gradient(top left, #4055F2, #50D2B4); 
+    background: -moz-linear-gradient(top left, #4055F2, #50D2B4); 
+    background: linear-gradient(to top left, #4055F2, #50D2B4);
+}
+
+#wrapper
+{
+    min-height: 100%;
+    position: relative;
+}
+
+#content
+{
+	padding-bottom:50px; 
+}
+
+img
+{
+    display: block;
+    margin: auto;
+    padding-top: 4em;
+	overflow: hidden;
+	vertical-align:bottom;
+    border:0;
+}
+
+h1, h2, h3, h4
+{
+    color: white;
+    text-align: center;
+}
+
+h2
+{
+	font-size: 20px;
+	font-weight: 500;
+}
+
+p
+{
+    color: white;
+	font-size: 15px;
+	font-weight: 300;
+	text-align: justify;
+}
+
+#footer
+{
+	width:100%;
+	height:55px;
+	position:absolute;
+	bottom:0;
+	left:0;
+}
+
+
+/********************
+MEDIA QUERIES
+*******************/
+/* Mobile: 320px = 20em */
+@media screen and (min-width: 20em)
+{ 
+    img
+	{
+        max-height: 60%;
+        max-width: 60%;
+    }
+	
+	.row.equal 
+	{
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+}
+
+/* Tablet:  768px = 160em */
+@media screen and (min-width: 48em)
+{
+    img
+	{
+        max-hight: 20em;
+        max-width: 20em;
+    }
+	
+	.row.equal 
+	{
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+}
+
+/* Desktop: 1280px = 80em */
+@media screen and (min-width: 80em)
+{
+
+}

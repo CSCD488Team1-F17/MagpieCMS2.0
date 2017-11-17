@@ -1,0 +1,71 @@
+h1, h2, h3, h4, a, p
+{
+	font-family: Montserrat;
+}
+
+h1 /*.create-your-collecti*/ 
+{
+	color: #A7ACB3;
+	font-size: 48px;
+	font-weight: bold;
+	line-height: 58px;
+	text-align: center;
+}
+
+h4
+{
+	color: #40AAF2;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 22px;
+}
+
+a
+{
+	color: #C8CDD5;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 18px;
+	text-align: center;
+}
+
+lable
+{
+	color: #231F20;
+	font-size: 11px;
+	font-weight: 300;
+	line-height: 14px;
+}
+
+h2
+{
+	color: #FFFFFF;
+	font-size: 11px;
+	font-weight: 500;
+	line-height: 14px;
+}
+
+h3
+{
+	color: #FFFFFF;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 22px;
+	text-align: center;
+}
+
+#browse
+{
+	height: 26px;
+	width: 108px;
+	border-radius: 13px;
+	background-color: #40AAF2;
+}
+
+#btn-prev, #btn-save, #btn-next
+{
+	height: 2.37%;
+	width: 19.73%;
+	border-radius: 24px;
+	background-color: #40AAF2;
+}

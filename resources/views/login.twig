@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-signin-client_id" content="1051549843498-vkaq31j25faui6j6tp6hccrulrklvmdt.apps.googleusercontent.com">
+
+  <title>The Magpie App</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="img/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Normalize CSS makes browsers render all elements more consistently -->
+  <link rel="stylesheet" href="https://necolas.github.io/normalize.css/5.0.0/normalize.css">
+  <!-- YOUR STYLES GO HERE -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="js/login.js"></script>
+
+</head>
+
+<body>
+
+  <!-- YOUR AWESOME WEBSITE -->
+  <div id="wrapper">
+    <div id="content">
+      <img src="img/mglogo2.png" alt="Magpie Birdhouse">
+      <h1>Login or Create an Account</h1>
+      <center>
+        <div id="signIn" class="g-signin2" data-onsuccess="onSignIn"></div>
+      </center>
+      <div id="userInfo"></div>
+    </div>
+    <div id="footer">
+      <p>copyright 2017</p>
+    </div>
+  </div>
+
+</body>
+
+</html>

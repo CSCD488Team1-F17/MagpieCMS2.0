@@ -1,0 +1,140 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<link rel="stylesheet" href="/css/create.css">
+    <div class="container">
+        <h1>CREATE YOUR COLLECTION</h1>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h4 style="color:#40AAF2"><strong>NAME</strong></h4>
+                <div></div>
+                <label>What is the collection name you'd like scavengers to see?</label>
+                <textarea class="form-control" rows="1" id="name"></textarea>
+                <div style="padding: 15px"></div>
+                <h4 style="color:#40AAF2"><strong>ABBREVIATION</strong></h4>
+                <div></div>
+                <label>What is the three letter abbreviation you'd like scavengers to see?</label>
+                <textarea class="form-control" rows="1" id="abbreviation" style="width:25%"></textarea>
+                <div style="padding: 15px"></div>
+                <h4 style="color:#40AAF2"><strong>SUMMARY</strong></h4>
+                <div></div>
+                <label>Please provide a brief description of your collection. Description can include information such as: general location, types of badges to expect, purpose, etc.</label>
+                <textarea class="form-control" rows="6" id="summary"></textarea>
+                <div style="padding: 15px"></div>
+                <h4 style="color:#40AAF2"><strong>SUPERBADGE</strong></h4>
+                <div></div>
+                <label>Upload a PNG icon that represents your entire colleciton.</label>
+                <div class="row">
+                    <div class="col-md-9">
+                        <textarea class="form-control" rows="1" id="superbadge" readonly></textarea>
+                    </div>
+                    <div class="col-md-3">
+                        <form method="POST" enctype="multipart/form-data" id="sbupload">
+                            <label class="btn btn-default btn-file" id="browse">Browse
+                            <input type="file" name="newfile" style="display: none;" onchange="setName(this.value);">
+                            </label>
+                        </form>
+                    </div>
+                </div>
+                <div style="padding: 30px"></div>
+                <h4 style="color:#40AAF2"><strong>BADGE QUANTITY</strong></h4>
+                <div></div>
+                <label>For now, how many badges will be in your collection</label>
+                <textarea class="form-control" rows="1" id="badgeq" style="width:25%"></textarea>
+                <div style="padding: 30px"></div>
+                <h4 style="color:#40AAF2"><strong>BADGE ORDER</strong></h4>
+                <div></div>
+                <label>Would you like the badges in the collection to be in a specific order?</label>
+                <div></div>
+                <label class="radio-inline"><input type="radio" name="optradio" class="orderCollection" value="1">Yes</label>
+                <label class="radio-inline"><input type="radio" name="optradio" class="orderCollection" value="0">No</label>
+                <div style="padding: 30px"></div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <button id="btn-prev" onClick="window.location.href = '/collections'" class="btn btn-default btn-md pull-right" >Previous</button>
+            </div>
+            <div class="col-md-4 text-center">
+                <button class="btn btn-default btn-md" id="btn-save">Save</button>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-default btn-md pull-left" id="btn-next">Next</button>
+            </div>
+        </div>
+        <div style="padding: 30px"></div>
+        <script>
+        	function setName(name){
+        		var fileName = name.substr(name.lastIndexOf("\\")+1, name.length);
+        		document.getElementById("superbadge").value = fileName;
+        	}
+        </script>
+        <script>
+            //Posts the create page form data to the backend then on success redirects to the badge page
+            $(document).on('click', '#btn-next', function(){
+                var r = confirm("Are you finished with your changes?");
+                if (r == true){
+                    var valid = validate();
+                    if(valid){
+                        //var cid = parseInt($('#cid').text());
+                        var abv = $("#abbreviation").val();
+                        var name = $("#name").val();
+                        var summary = $("#summary").val();
+                        var numBadge = $("#badgeq").val();
+                        var ordered = $(".orderCollection:checked").val();
+                        var cid = {{ cid|json_encode|raw}};
+                        var form = $('form')[0];
+                        var formData = new FormData(form);
+                        formData.append("cid", cid);
+                        formData.append("name", name);
+                        formData.append("abv", abv);
+                        formData.append("summary", summary);
+                        formData.append("numBadge", numBadge);
+                        formData.append("ordered", ordered);
+
+                        var GoogleUser = GoogleAuth.currentUser.get();
+                        var id_token = GoogleUser.getAuthResponse().id_token;
+
+                        formData.append("idToken", id_token);
+                        $.ajax({
+                            url:'/database/collection',
+                            type:'post',
+                            data:formData,
+                            contentType: false,
+                            processData: false,
+                            success:function(data){
+                                window.location.href = "/landmarks/" + (parseInt(cid));
+                            }
+                        });
+                    }
+                }
+            });
+            //Data validation function
+            function validate(){
+                if($("#name").val() == ""){
+                    alert("You have not entered a NAME!");
+                    return false;
+                }else if($("#abbreviation").val() == ""){
+                    alert("You have not entered a ABBREVIATION!");
+                    return false;
+                }else if($("#summary").val() == ""){
+                    alert("You have not entered a SUMMARY!");
+                    return false;
+                }else if($("#badgeq").val() == ""){
+                    alert("You have not entered a BADGE QUANTITY!");
+                    return false;
+                }else if(parseInt($("#badgeq").val()) < 3){
+                    alert("You have to have 3 or more BADGES!");
+                    return false;
+                }else if(!($("#superbadge").val().endsWith(".png"))){
+                    alert("You have to upload a .png file!");
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        </script>
+    </div>
+{% endblock %}

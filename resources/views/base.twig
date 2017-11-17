@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>The Magpie App</title>
+ 
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400" rel="stylesheet"> 
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="img/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ffffff">
+  <!-- Normalize CSS makes browsers render all elements more consistently -->
+  <link rel="stylesheet" href="https://necolas.github.io/normalize.css/5.0.0/normalize.css">  
+  <!-- YOUR STYLES GO HERE -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">	
+  <link rel="stylesheet" href="/css/styles.css">
+	
+  <script src="/js/login.js"></script>
+  <script async defer src="https://apis.google.com/js/api.js" 
+      onload="this.onload=function(){};handleClientLoad()" 
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+  </script>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+</head>
+<body style="background: white">
+  <div class="jumbotron">
+  <div class="container">
+    <div id="header"></div>
+    </div>
+    <div class="navbar navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a href="/collections">COLLECTIONS</a>
+            </li>
+            <li class="">
+              <a href="/create">CREATE</a>
+            </li>
+            <li class="">
+              <a href="/contact">CONTACT US</a>
+            </li>
+            <li class="">
+              <a href="/legal">LEGAL STUFF</a>
+            </li>
+            <li class="">
+              <a href="/account">ACCOUNT</a>
+            </li>
+            <li class="">
+              <a href="#" onclick="onSignOut()">LOG OUT</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+    {% block content %}
+
+    {% endblock %}
+
+
+
+</body>
+</html>

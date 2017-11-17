@@ -1,0 +1,17 @@
+{#
+view.twig
+
+Unused file that was going to be used as a review page for collections.
+#}
+{% extends "base.twig" %}
+
+{% block content %}
+    <script src="/js/view.js"></script>
+    <script>
+         initView({{cid}});
+    </script>
+    <div class="container">
+        <h1>REVIEW COLLECTION</h1>
+        <div id="view"></div>
+    </div>
+{% endblock %}

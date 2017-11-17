@@ -1,0 +1,81 @@
+html, body
+{
+	height: 100%;
+}
+
+body
+{
+	background: white;
+}
+
+#wrapper
+{
+    min-height: 100%;
+    position: relative;
+}
+
+#content
+{
+	padding-bottom:50px; 
+}
+
+h1, h2, h3, h4, p, a
+{
+	font-family: Montserrat;
+}
+
+h1
+{
+	color: #A7ACB3;
+	font-size: 48px;
+	font-weight: bold;
+	line-height: 58px;
+	text-align: center;
+}
+
+h2
+{
+	color: #52D291;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 22px;
+    padding-left: 20%;
+    	font-weight: bold;
+}
+
+h3
+{
+	color: #A7ACB3;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 18px;
+    padding-left: 20%;
+    	font-weight: bold;
+}
+
+a
+{
+	color: #C8CDD5;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 18px;
+}
+
+p
+{
+	color: #231F20;
+	font-size: 11px;
+	font-weight: 300;
+	line-height: 14px;
+    text-align: left;
+    padding-left: 20%;
+}
+
+h4
+{
+	color: #FFFFFF;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 22px;
+	text-align: center;
+}

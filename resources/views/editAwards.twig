@@ -1,0 +1,124 @@
+{% extends "base.twig" %}
+
+{% block content %}
+    <div class="container">
+        <h1>ASSIGN YOUR AWARD</h1>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h4 style="color:#40AAF2"><strong>AWARD NAME</strong></h4>
+                <div></div>
+                <label>What will be awarded to scavengers who complete the collection?</label> 
+                <textarea class="form-control" rows="1" id="name">{{name}}</textarea>
+                <div style="padding: 15px"></div>
+                <h4 style="color:#40AAF2"><strong>LOCATION</strong></h4>
+                <div></div>
+                <label>What is the name of the place that scavengers need to visit to collect their awards?</label> 
+                <textarea class="form-control" rows="1" id="locationName">{{locationName}}</textarea>
+                <div style="padding: 15px"></div>
+				<label><small>Click to enter a pin on the map or enter the latitude and longitude for the award location.</small></label>
+				<div id="map" style="width:500px; height:500px;"></div>
+				<script>
+					var marker;
+					function myMap() {
+					var mapCanvas = document.getElementById("map");
+					var mapOptions = {
+					center: new google.maps.LatLng({{latitude|json_encode|raw}}, {{longitude|json_encode|raw}}),
+					zoom: 10};
+					var map = new google.maps.Map(mapCanvas, mapOptions);
+					
+					google.maps.event.addListener(map, 'click', function(event) {
+					placeMarker(map, event.latLng);
+					});
+					google.maps.event.trigger(map, 'resize');0
+					placeMarker(map, new google.maps.LatLng({{latitude|json_encode|raw}}, {{longitude|json_encode|raw}}));
+					}
+					
+					
+					function placeMarker(map, location) {
+					  if (marker) {
+						marker.setPosition(location);
+					  } 
+					  else {
+						marker = new google.maps.Marker({
+						position: location,
+						map: map
+					  });
+					}
+					var tempLoc = String(location).substring(1,String(location).length-2).split(",");
+					var markerPosition = marker.getPosition();
+					populateInputs(markerPosition);
+					var infowindow = new google.maps.InfoWindow({
+						content: 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()
+					});
+						infowindow.open(map,marker);
+					}
+					
+					function populateInputs(pos) {
+						document.getElementById("latitude").value = pos.lat()
+						document.getElementById("longitude").value = pos.lng();
+					}
+				</script>
+				<script async defer
+					src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAueqfdhE5KaeiKc1qZjNeyBvVbvNrY9bU&callback=myMap">
+				</script>
+				<div style="padding: 5px"></div>
+				<label style="color:#40AAF2; font-size:18px; margin-left:170px;"> -or- </label>
+				<div style="padding:5px"></div>
+				<div class="ui-grid-a">
+				<div data-role = "fieldcontain" class = "ui-hide-label ui-block-a">
+					<input type="text" name="lat" id="latitude" value="{{latitude}}" placeholder="Latitude"/>
+					<input type="text" name="long" id="longitude" value="{{longitude}}" placeholder="Longitude"/>
+				</div>
+				</div>
+				<div style="padding: 15px"></div>
+                <h4 style="color:#40AAF2"><strong>TERMS AND CONDITIONS (optional)</strong></h4>
+                <div></div>
+                <label>If any terms or conditions apply to the award or to the collection of the award, please state or describe them below.</label> 
+                <textarea class="form-control" rows="6" id="optionalConditions">{{optionalConditions}}</textarea>
+                <div style="padding: 15px"></div> 
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <button id="btn-prev" onClick="window.location.href = '/landmarks/' + {{cid}}" class="btn btn-default btn-md pull-right" style="border-radius: 17px; background: #40AAF2; padding-left: 30px; padding-right: 30px;">Previous</button>  
+            </div>
+            <div class="col-md-4 text-center">
+                <button class="btn btn-default btn-md" style="border-radius: 17px; background: #40AAF2; padding-left: 40px; padding-right: 40px;" id="btn-save">Save</button> 
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-default btn-md pull-left" onClick="window.location.href = '/collections'" style="border-radius: 17px; background: #40AAF2; padding-left: 40px; padding-right: 40px;" id="btn-next">Next</button>
+            </div>
+        </div>
+        <div style="padding: 30px"></div>
+        <script>
+            $(document).on('click', '#btn-next', function(){
+                var name = $("#name").val();
+				var locationName = $("#locationName").val();
+				var optionalConditions = $("#optionalConditions").val();
+                var cid = {{ cid|json_encode|raw}};
+				var latitude = $("#latitude").val();
+				var longitude = $("#longitude").val();
+                var form = $('form')[0]; 
+                var formData = new FormData(form);
+                formData.append("cid", cid);
+                formData.append("name", name);
+				formData.append("locationName", locationName);
+				formData.append("latitude", latitude);
+				formData.append("longitude", longitude);
+				formData.append("optionalConditions", optionalConditions);
+                $.ajax({
+                    url:'/add/awards',
+                    type:'post',
+                    data:formData,
+                    contentType: false,
+                    processData: false,
+                    success:function(data){
+                        window.location.href = "/collections";
+                    }
+                });
+            });
+        </script>
+    </div>
+{% endblock %}
