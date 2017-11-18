@@ -1,4 +1,13 @@
 <?php
+
+/*
+ * Currently just being used for reference
+ *
+ *
+ */
+
+
+
 /*
 webapp.php
 
@@ -14,6 +23,10 @@ When a user attempts to edit a collection they did not make it simply yells at t
 The function canEdit can be improved.
 */
 
+
+
+
+
     //Enforce type restriction. Not necessary and wasn't strongly used.
     use \Psr\Http\Message\ServerRequestInterface as Request;
     use \Psr\Http\Message\ResponseInterface as Response;
@@ -27,7 +40,7 @@ The function canEdit can be improved.
         //A session must be started in order for Google' oauth2callback to work
         session_start();
 
-        //Get our config object and fetch our client_secret.json file
+        //Get our config object and fetch our firebase_credentials.json file
         $config = require dirname(__FILE__, 2) . '/config.php';
 
         $client = new Google_Client();
@@ -50,7 +63,7 @@ The function canEdit can be improved.
         //A session must be started in order for Google' oauth2callback to work
         session_start();
 
-        //Get our config object and fetch our client_secret.json file
+        //Get our config object and fetch our firebase_credentials.json file
         $config = require dirname(__FILE__, 2) . '/config.php';
 
         $client = new Google_Client();

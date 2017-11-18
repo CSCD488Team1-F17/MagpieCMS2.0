@@ -23,7 +23,7 @@ This stores some of our custom settings that we use throughout our application, 
                                 // Furthermore, the string must be the full absolute path, not relative.
 
         */
-        'credentialsFile' => dirname(__FILE__, 1) . '/client_secret.json',
+        'credentialsFile' => dirname(__FILE__, 1) . '/firebase_credentials.json',
         
     );
 

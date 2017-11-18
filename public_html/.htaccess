@@ -1,8 +1,14 @@
 #This file is essential for Slim Framework to function.
 #PHP 7 is required and we must have the RewriteRule.
 
+#Options -MultiViews
 RewriteEngine On
+#Options -Indexes
+
+#RewriteBase /MagpieCMS2.0/public_html
+
 AddHandler application/x-httpd-php70 .php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME} !-l
 RewriteRule ^ index.php [QSA,L]

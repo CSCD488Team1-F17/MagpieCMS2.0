@@ -6,9 +6,9 @@
  * Time: 2:39 PM
  */
 
-namespace Magpiehunt\Controllers;
-
-use Slim\Views\Twig as View;
+namespace Magpiehunt\Controllers\Webapp;
+use Magpiehunt\Controllers\Controller as Controller;
+use Slim\Views\Twig as view;
 
 class HomeController extends Controller
 {

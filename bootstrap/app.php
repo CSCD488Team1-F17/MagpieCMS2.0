@@ -6,6 +6,11 @@ This file does most of application setup and configuration.
 After setup, it loads our URL routes and starts up the app.
 */
 //Load Slim App class
+use Magpiehunt\Controllers\Webapp\HomeController;
+
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\ServiceAccount;
+
 require __DIR__ . '/../vendor/autoload.php';
 
 //Set up our settings variables
@@ -42,17 +47,12 @@ $container['view'] = function ($container) {
     return $view;
 };
 
-$container['HomeController'] = function($container){
-    return new \Magpiehunt\Controllers\HomeController($container);
-};
-//Here we load our settings template path which points to our .twig files
-/*
-$container['renderer'] = function ($c) {
-    $settings = $c->get('settings')['renderer'];
-    return new Slim\Views\PhpRenderer($settings['template_path']);
-};
+//initialize Firebase
+/*$serviceAccount = ServiceAccount::fromJsonFile(__DIR__.'/firebase_credentials.json');
+$firebase = (new Factory)
+    ->withServiceAccount($serviceAccount)
+    ->create();
 */
-
 //Loading point for our routes
 require __DIR__ . '/../app/routes.php';
 
