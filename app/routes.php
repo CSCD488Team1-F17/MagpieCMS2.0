@@ -18,7 +18,7 @@ This helped keep us stay organized and keep the code as clean as possible.
     require __DIR__ . '/services/controllers.php';
 
     $app->get('/', HomeController::class . ':index');
-    $app->get('/login', LoginController::class . ':login');
+    $app->get('/login', CMSController::class . ':login');
     $app->get('/welcome', CMSController::class . ':welcome');
     $app->get('/contact', CMSController::class . ':contact');
     $app->get('/collections', CMSController::class . ':collections');
