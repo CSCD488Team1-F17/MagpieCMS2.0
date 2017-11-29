@@ -60,9 +60,9 @@ $container['view'] = function ($container) {
 //Loading point for our routes
 require __DIR__ . '/../app/routes.php';
 
-//$firebase = $container['FirebaseController'];
+$firebase = $container['FirebaseController'];
 
-//$container['fbdatabase'] = $firebase->getFirebaseDB();
+$container['fbdatabase'] = $firebase->getFirebaseDB();
 
 
 

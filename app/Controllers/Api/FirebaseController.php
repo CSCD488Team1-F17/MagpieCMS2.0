@@ -40,7 +40,7 @@ class FirebaseController extends Controller
     }
     function getAPIKey()
     {
-        return 'AIzaSyDoEaVyRVUmX7Ij-OxiiqVlUkaUYDPiMgo';
+        return file_get_contents(__DIR__ . "/../../../bootstrap/ApiKey");
     }
 
     public function getFirebase(): \Kreait\Firebase
