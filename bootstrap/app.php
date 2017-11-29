@@ -7,6 +7,7 @@ After setup, it loads our URL routes and starts up the app.
 */
 //Load Slim App class
 use Magpiehunt\Controllers\Webapp\HomeController;
+use Magpiehunt\Controllers\Api\DatabaseController;
 
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
@@ -47,26 +48,23 @@ $container['view'] = function ($container) {
     return $view;
 };
 
-//initialize Firebase
 
-$serviceAccount = ServiceAccount::fromJsonFile(__DIR__ . '/firebase-admin-credentials.json');
-$apiKey = 'AIzaSyDoEaVyRVUmX7Ij-OxiiqVlUkaUYDPiMgo';
-
-$firebase = (new Factory)
-    ->withServiceAccountAndApiKey($serviceAccount, $apiKey)
-    ->withDatabaseUri('https://magpie-3d047.firebaseio.com')
-    ->create();
-
-$database = $firebase->getDatabase();
-
-$newPost = $database
+/*$newPost = $fbdatabase
     ->getReference('blog/posts')
     ->push([
         'title' => 'Post title',
         'body' => 'This should probably be longer.'
     ]);
+
+*/
 //Loading point for our routes
 require __DIR__ . '/../app/routes.php';
+
+//$firebase = $container['FirebaseController'];
+
+//$container['fbdatabase'] = $firebase->getFirebaseDB();
+
+
 
 //Run the app
 $app->run();

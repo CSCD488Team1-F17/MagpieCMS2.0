@@ -12,68 +12,48 @@ use PDO;
 
 use Magpiehunt\Controllers\Controller as Controller;
 
-$config = require dirname(__FILE__, 2) . '/../bootstrap/config.php';
+$config = require __DIR__ . '/../../../bootstrap/config.php';
+
 
 class DatabaseController extends Controller
 {
 
+    public function __construct($container)
+    {
+        parent::__construct($container);
+    }
 
     function connect_db(){
-        $config = require dirname(__FILE__, 3) . '/bootstrap/config.php';
+        $config = require __DIR__ . '/../../../bootstrap/config.php';
         $connection = new PDO("mysql:host=$config->server;dbname=$config->database" ,$config->username, $config->password);
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         return $connection;
     }
-    function collection(Request $request){
-        $cid =(int)$request->getParam("cid");
-        $name = $request->getParam("name");
-        $abv = $request->getParam("abv");
-        $description = $request->getParam("summary");
-        $numberOfLandmarks = (int)$request->getParam("numBadge");
-        $isOrdered = (int)$request->getParam("ordered");
-        $idToken = $request->getParam("idToken");
-
-        error_log(print_r($idToken, TRUE));
-
-        $conn = connect_db();
-        $stmt = $conn->prepare("INSERT INTO Collections (Name, Abbreviation, Description, NumberOfLandMarks, IsOrder) VALUES (?, ?, ?, ?, ?)");
-
-        $stmt->execute([$name, $abv, $description, $numberOfLandmarks, $isOrdered]);
-
-        $picID = (int)superbadgeUpload($request);
-        $stmt = $conn->prepare("UPDATE Collections SET PicID = ? WHERE CID = ?");
-        $stmt->execute([$picID, $cid]);
-
-        $conn = null;
-
-        $config = require dirname(__FILE__, 2) . '/../bootstrap/config.php';
-
-        $client = new Google_Client();
-        $client->setAuthConfig($config->credentialsFile);
-        $client->setRedirectUri('http://' . $_SERVER['HTTP_HOST'] . '/oauth2callback');
-        $client->addScope('openid');
-
-        $payload = $client->verifyIdToken($idToken);
-        if ($payload) {
-            $userid = $payload['sub'];
-            $conn = connect_db();
-
-            $stmt = $conn->prepare("SELECT * FROM WebUserData WHERE UID = ?;");
-            $stmt->execute([$userid]);
-            $output = $stmt->fetch();
-            error_log(print_r($output['UserID'], TRUE));
-            if($output['UID'] == $userid){
-                $stmt = $conn->prepare("INSERT INTO UserMadeCollectionList (UserID, CollectionID) VALUES (?, ?);");
-                $stmt->execute([$output['UserID'], $cid]);
-            }
-
-            $conn = null;
-        } else {
-            return $response->withStatus(300);
+    //gets all collections
+    function collectionPull($request, $response){
+        $ara = array();
+        $conn = $this->connect_db();
+        $output = $conn->query("SELECT * FROM Collections WHERE Available = 1;");
+        while($row = $output->fetch()) {
+            array_push($ara, $row);
         }
+        echo json_encode($ara);
+        $conn = null;
+    }
+    //gets all landmarks with given cid
+    function landmarkPull($request, $response)
+    {
 
-        echo("success");
+        $cid = (int)$request->getParam('cid');
+        $ara = array();
+        $conn = $this->connect_db();
+        $output = $conn->query("SELECT * FROM Landmarks WHERE cid = $cid ORDER BY 'Order' asc ;");
+        while ($row = $output->fetch()) {
+            array_push($ara, $row);
+        }
+        echo json_encode($ara);
+        $conn = null;
     }
 
 }

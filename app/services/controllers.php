@@ -7,9 +7,10 @@
  */
 
 use Magpiehunt\Controllers\Webapp\HomeController;
-use Magpiehunt\Controllers\Webapp\LoginController;
-use Magpiehunt\Controllers\Webapp\ContactController;
 use Magpiehunt\Controllers\Webapp\CMSController;
+use Magpiehunt\Controllers\Api\DatabaseController;
+use Magpiehunt\Controllers\Api\FirebaseController;
+
 
 $container = $app->getContainer();
 
@@ -17,12 +18,12 @@ $container = $app->getContainer();
 $container['HomeController'] = function($container){
     return new HomeController($container);
 };
-$container['LoginController'] = function($container){
-    return new LoginController($container);
-};
-$container['ContactController'] = function($container){
-    return new ContactController($container);
-};
 $container['CMSController'] = function($container){
     return new CMSController($container);
+};
+$container['DatabaseController'] = function($container){
+    return new DatabaseController($container);
+};
+$container['FirebaseController'] = function($container){
+    return new FirebaseController($container);
 };

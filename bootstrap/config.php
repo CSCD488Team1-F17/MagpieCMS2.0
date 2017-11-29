@@ -9,8 +9,8 @@ This stores some of our custom settings that we use throughout our application, 
         //Database related
         'server' => 'localhost',
         'username' => 'root',
-        'password' => '',
-        'database' => 'magpie',
+        'password' => '1234',
+        'database' => 'magpiedb',
         
         /*
         The location and name of our Google API client/secret file provided by Google.

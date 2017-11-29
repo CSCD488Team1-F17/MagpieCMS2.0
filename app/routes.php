@@ -27,6 +27,8 @@ This helped keep us stay organized and keep the code as clean as possible.
     $app->get('/account', CMSController::class . ':account');
 
 
+    require 'apiRoutes.php';
+
     //not implemented yet
     //$app->get('/logout', CMSController::class . ':logout');
 
