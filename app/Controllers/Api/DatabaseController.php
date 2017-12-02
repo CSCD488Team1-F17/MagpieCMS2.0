@@ -48,7 +48,15 @@ class DatabaseController extends Controller
         $cid = (int)$request->getParam('cid');
         $ara = array();
         $conn = $this->connect_db();
-        $output = $conn->query("SELECT * FROM Landmarks WHERE cid = $cid ORDER BY 'Order' asc ;");
+        //cid given
+        if($cid != null)
+        {
+            $output = $conn->query("SELECT * FROM Landmarks WHERE cid = $cid ORDER BY 'Order' asc ;");
+        }
+        //no cid specified
+        else {
+            $output = $conn->query("SELECT * FROM Landmarks ORDER BY 'Order' asc ;");
+        }
         while ($row = $output->fetch()) {
             array_push($ara, $row);
         }

@@ -12,5 +12,5 @@ use Magpiehunt\Controllers\Api\DatabaseController;
 $container = $app->getContainer();
 
 //$container['dbconnection'] = $app->get('/connect_db', DatabaseController::class . ':connect_db');
-$app->get('/collectionPull', DatabaseController::class . ':collectionPull');
-$app->get('/landmarkPull', DatabaseController::class . ':landmarkPull');
+$app->get('/api/collectionPull', DatabaseController::class . ':collectionPull');
+$app->get('/api/landmarkPull', DatabaseController::class . ':landmarkPull');

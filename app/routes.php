@@ -11,8 +11,6 @@ This helped keep us stay organized and keep the code as clean as possible.
     //require 'api.php';
 
     use Magpiehunt\Controllers\Webapp\HomeController;
-    use Magpiehunt\Controllers\Webapp\LoginController;
-    use Magpiehunt\Controllers\Webapp\ContactController;
     use Magpiehunt\Controllers\Webapp\CMSController;
 
     require __DIR__ . '/services/controllers.php';
