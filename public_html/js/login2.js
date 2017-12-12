@@ -1,3 +1,5 @@
+//import firebase from 'firebase';
+
 function login() {
     // Initialize Firebase
 
@@ -48,7 +50,7 @@ function onSignIn(googleUser) {
             var credential = firebase.auth.GoogleAuthProvider.credential(
                 googleUser.getAuthResponse().id_token);
             // Sign in with credential from the Google user.
-            firebase.auth().signInWithCredential(credential).catch(function(error) {
+            var promise = firebase.auth().signInWithCredential(credential).catch(function(error) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
@@ -58,6 +60,7 @@ function onSignIn(googleUser) {
                 var credential = error.credential;
                 // ...
             });
+            promise.catch(e => console.log(e.message));
         } else {
             console.log('User already signed-in Firebase.');
         }

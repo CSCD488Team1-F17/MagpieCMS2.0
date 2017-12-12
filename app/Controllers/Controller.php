@@ -22,7 +22,7 @@ class Controller
             return $this->container->{$property};
         }
     }
-    public function canEdit(Response $response, $cid)
+   /* public function canEdit(Response $response, $cid)
     {
         //A session must be started in order for Google' oauth2callback to work
         session_start();
@@ -103,5 +103,5 @@ class Controller
         } else {
             return $response->withRedirect('/oauth2callback');
         }
-    }
+    }*/
 }

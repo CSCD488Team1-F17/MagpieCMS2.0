@@ -13,4 +13,5 @@ $container = $app->getContainer();
 
 //$container['dbconnection'] = $app->get('/connect_db', DatabaseController::class . ':connect_db');
 $app->get('/api/collectionPull', DatabaseController::class . ':collectionPull');
-$app->get('/api/landmarkPull', DatabaseController::class . ':landmarkPull');
+$app->get('/api/landmarkPull/[{cid}]', DatabaseController::class . ':landmarkPull');
+$app->get('/api/connect_db', DatabaseController::class . ':connect_db');

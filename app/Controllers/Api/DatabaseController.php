@@ -11,6 +11,8 @@ namespace Magpiehunt\Controllers\Api;
 use PDO;
 
 use Magpiehunt\Controllers\Controller as Controller;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 $config = require __DIR__ . '/../../../bootstrap/config.php';
 
@@ -25,43 +27,50 @@ class DatabaseController extends Controller
 
     function connect_db(){
         $config = require __DIR__ . '/../../../bootstrap/config.php';
-        $connection = new PDO("mysql:host=$config->server;dbname=$config->database" ,$config->username, $config->password);
+        $server = $config->server;
+        //echo $server;
+        $user = $config->username;
+        //echo $user;
+        $pass = $config->password;
+        //echo $pass;
+        $database = $config->database;
+        //echo $database;
+        $connection = new PDO("mysql:host=" . $server . ";dbname=" . $database, $user, $pass);
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
         return $connection;
     }
     //gets all collections
-    function collectionPull($request, $response){
+    function collectionPull(ServerRequestInterface $request){
         $ara = array();
         $conn = $this->connect_db();
-        $output = $conn->query("SELECT * FROM Collections WHERE Available = 1;");
-        while($row = $output->fetch()) {
-            array_push($ara, $row);
-        }
-        echo json_encode($ara);
+        $query = "SELECT * FROM Collections WHERE Available = 1";
+        $output = $conn->prepare($query);
+        $output->execute();
+        /*while($row = $output->fetchObject()) {
+            $ara[] = $row;
+        }*/
+        $res = $output->fetchAll();
+        echo json_encode($res);
         $conn = null;
     }
     //gets all landmarks with given cid
-    function landmarkPull($request, $response)
+    function landmarkPull( ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-
-        $cid = (int)$request->getParam('cid');
+        $cid = (int)$request->getAttribute('cid');
         $ara = array();
         $conn = $this->connect_db();
-        //cid given
-        if($cid != null)
-        {
-            $output = $conn->query("SELECT * FROM Landmarks WHERE cid = $cid ORDER BY 'Order' asc ;");
-        }
-        //no cid specified
-        else {
-            $output = $conn->query("SELECT * FROM Landmarks ORDER BY 'Order' asc ;");
-        }
-        while ($row = $output->fetch()) {
-            array_push($ara, $row);
-        }
-        echo json_encode($ara);
+        $output = $conn->prepare("SELECT * FROM Landmarks WHERE cid = :cid ORDER BY 'Order' asc");
+        $output->bindParam("cid", $args['cid']);
+        $output->execute();
+        $res = $output->fetchAll();
+        echo json_encode($res);
         $conn = null;
     }
+    function landmarkImg($request)
+    {
+        $lid = (int)$request->getParam('lid');
 
+    }
 }
