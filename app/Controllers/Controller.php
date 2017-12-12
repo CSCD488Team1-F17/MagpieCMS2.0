@@ -22,12 +22,12 @@ class Controller
             return $this->container->{$property};
         }
     }
-    public function canEdit(Response $response, $cid)
+   /* public function canEdit(Response $response, $cid)
     {
         //A session must be started in order for Google' oauth2callback to work
         session_start();
 
-        //Get our config object and fetch our firebase_credentials.json file
+        //Get our config object and fetch our firebase-admin-credentials.json file
         $config = require dirname(__FILE__, 2) . '/config.php';
 
         $client = new Google_Client();
@@ -90,7 +90,7 @@ class Controller
         //A session must be started in order for Google' oauth2callback to work
         session_start();
 
-        //Get our config object and fetch our firebase_credentials.json file
+        //Get our config object and fetch our firebase-admin-credentials.json file
         $config = require dirname(__FILE__, 2) . '/config.php';
 
         $client = new Google_Client();
@@ -103,5 +103,5 @@ class Controller
         } else {
             return $response->withRedirect('/oauth2callback');
         }
-    }
+    }*/
 }

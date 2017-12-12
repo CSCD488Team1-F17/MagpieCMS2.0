@@ -9,8 +9,8 @@ This stores some of our custom settings that we use throughout our application, 
         //Database related
         'server' => 'localhost',
         'username' => 'root',
-        'password' => '',
-        'database' => 'magpie',
+        'password' => '1234',
+        'database' => 'magpiedb',
         
         /*
         The location and name of our Google API client/secret file provided by Google.
@@ -23,7 +23,7 @@ This stores some of our custom settings that we use throughout our application, 
                                 // Furthermore, the string must be the full absolute path, not relative.
 
         */
-        'credentialsFile' => dirname(__FILE__, 1) . '/firebase_credentials.json',
+        'credentialsFile' => dirname(__FILE__, 1) . '/firebase-admin-credentials.json',
         
     );
 

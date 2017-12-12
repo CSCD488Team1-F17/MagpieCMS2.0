@@ -1,2 +1,4 @@
-app/vendor
+vendor
 .idea
+bootstrap/firebase-admin-credentials.json
+/bootstrap/ApiKey

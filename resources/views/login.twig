@@ -3,7 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="google-signin-client_id" content="1051549843498-vkaq31j25faui6j6tp6hccrulrklvmdt.apps.googleusercontent.com">
+  <meta name="google-signin-client_id" content="955947345618-m2gv4vonbip8mbbnotb71o7fr42p4fqd.apps.googleusercontent.com">
+  <meta name="google-signin-cookiepolicy" content="single_host_origin">
+  <meta name="google-signin-scope" content="profile email">
+
+
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-messaging.js"></script>
+
 
   <title>The Magpie App</title>
 
@@ -18,10 +28,99 @@
   <!-- YOUR STYLES GO HERE -->
   <link rel="stylesheet" href="css/styles.css">
 
+
+  <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
+
+
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
   <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <script src="js/login.js"></script>
+    <script>
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyDoEaVyRVUmX7Ij-OxiiqVlUkaUYDPiMgo",
+                authDomain: "magpie-3d047.firebaseapp.com",
+                databaseURL: "https://magpie-3d047.firebaseio.com",
+                projectId: "magpie-3d047",
+                storageBucket: "magpie-3d047.appspot.com",
+                messagingSenderId: "955947345618"
+            };
+            firebase.initializeApp(config);
+
+            var provider = new firebase.auth.GoogleAuthProvider();
+
+            firebase.auth().useDeviceLanguage();
+
+            provider.setCustomParameters({
+                'login_hint': 'user@example.com'
+            });
+
+            /*firebase.auth().signInWithPopup(provider).then(function (result) {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                var token = result.credential.accessToken;
+                // The signed-in user info.
+                var user = result.user;
+                alert(user.valueOf());
+                // ...
+            }).catch(function (error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // The email of the user's account used.
+                var email = error.email;
+                // The firebase.auth.AuthCredential type that was used.
+                var credential = error.credential;
+                // ...
+            });*/
+        function onSignIn(googleUser) {
+            console.log('Google Auth Response', googleUser);
+            // We need to register an Observer on Firebase Auth to make sure auth is initialized.
+            var unsubscribe = firebase.auth().onAuthStateChanged(function(firebaseUser) {
+                unsubscribe();
+                // Check if we are already signed-in Firebase with the correct user.
+                if (!isUserEqual(googleUser, firebaseUser)) {
+                    // Build Firebase credential with the Google ID token.
+                    var credential = firebase.auth.GoogleAuthProvider.credential(
+                        googleUser.getAuthResponse().id_token);
+                    // Sign in with credential from the Google user.
+                    firebase.auth().signInWithCredential(credential).catch(function(error) {
+                        // Handle Errors here.
+                        var errorCode = error.code;
+                        var errorMessage = error.message;
+                        // The email of the user's account used.
+                        var email = error.email;
+                        // The firebase.auth.AuthCredential type that was used.
+                        var credential = error.credential;
+                        // ...
+                    });
+                } else {
+                    console.log('User already signed-in Firebase.');
+                }
+            });
+        }
+        function isUserEqual(googleUser, firebaseUser) {
+            if (firebaseUser) {
+                var providerData = firebaseUser.providerData;
+                for (var i = 0; i < providerData.length; i++) {
+                    if (providerData[i].providerId === firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+                        providerData[i].uid === googleUser.getBasicProfile().getId()) {
+                        // We don't need to reauth the Firebase connection.
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        function signOut(){
+            firebase.auth().signOut().then(function() {
+                // Sign-out successful.
+            }).catch(function(error) {
+                // An error happened.
+            });
+        }
+    </script>
+  <!--<script src="js/login2.js"></script>-->
+
 
 </head>
 
@@ -33,7 +132,8 @@
       <img src="img/mglogo2.png" alt="Magpie Birdhouse">
       <h1>Login or Create an Account</h1>
       <center>
-        <div id="signIn" class="g-signin2" data-onsuccess="onSignIn"></div>
+        <div id="signIn" class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+          <a href="#" onclick="signOut();">Sign out</a>
       </center>
       <div id="userInfo"></div>
     </div>

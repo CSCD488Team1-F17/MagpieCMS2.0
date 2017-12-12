@@ -14,6 +14,10 @@ use Slim\Views\Twig as view;
 class CMSController extends Controller
 {
 
+    public function login($request, $response)
+    {
+        return $this->view->render($response, 'login.twig');
+    }
     public function welcome($request, $response)
     {
         return $this->view->render($response, 'welcome.twig');
