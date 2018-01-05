@@ -6,6 +6,8 @@
  * Time: 1:57 PM
  */
 
+//namespace Magpiehunt\Services;
+
 use Magpiehunt\Controllers\Webapp\HomeController;
 use Magpiehunt\Controllers\Webapp\CMSController;
 use Magpiehunt\Controllers\Api\DatabaseController;

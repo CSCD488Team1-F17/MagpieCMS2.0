@@ -17,5 +17,3 @@ class HomeController extends Controller
         return $this->view->render($response, 'index.twig');
     }
 }
-
-?>
