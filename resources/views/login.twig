@@ -89,7 +89,7 @@
           // [START getidptoken]
           firebase.auth().getRedirectResult().then(function(result) {
               if (result.credential) {
-                 // window.location = "/welcome";
+                  window.location = "/welcome";
 
                   // This gives you a Google Access Token. You can use it to access the Google API.
                   var token = result.credential.accessToken;

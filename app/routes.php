@@ -13,7 +13,7 @@ This helped keep us stay organized and keep the code as clean as possible.
     use Magpiehunt\Controllers\Webapp\HomeController;
     use Magpiehunt\Controllers\Webapp\CMSController;
 
-    require __DIR__ . '/Services/controllers.php';
+    require __DIR__ . '/services/controllers.php';
 
     $app->get('/', HomeController::class . ':index');
     $app->get('/login', CMSController::class . ':login');

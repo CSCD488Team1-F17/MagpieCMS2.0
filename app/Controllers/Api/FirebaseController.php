@@ -12,6 +12,7 @@ use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 use Magpiehunt\Controllers\Controller as Controller;
 
+
 class FirebaseController extends Controller
 {
     protected $firebase;
@@ -27,7 +28,6 @@ class FirebaseController extends Controller
             ->withServiceAccountAndApiKey($this->getServiceAccount(), $this->getAPIKey())
             ->withDatabaseUri('https://magpie-3d047.firebaseio.com')
             ->create();
-        return $this->firebase;
     }
 
     function getFirebaseDB()
@@ -43,13 +43,14 @@ class FirebaseController extends Controller
         return file_get_contents(__DIR__ . "/../../../bootstrap/ApiKey");
     }
 
-   /* public function getFirebase(): \Kreait\Firebase
+    public function getFirebase(): \Kreait\Firebase
     {
         return $this->firebase;
     }
     public function authFirebase()
     {
         $auth = $this->firebase->getAuth();
+     //   $verify = $auth->verifyIdToken($auth->)
     }
-*/
+
 }
