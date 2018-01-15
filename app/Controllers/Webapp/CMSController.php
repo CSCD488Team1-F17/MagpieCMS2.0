@@ -20,7 +20,6 @@ class CMSController extends Controller
     }
     public function welcome($request, $response)
     {
-
         return $this->view->render($response, 'welcome.twig');
     }
     public function collections($request, $response)
