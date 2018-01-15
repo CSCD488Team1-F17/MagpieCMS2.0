@@ -42,4 +42,23 @@ class CMSController extends Controller
     function logout($request, $response) {
 
     }
+    function authCheck($path, $app, Request $request, Response $response, $args)
+    {
+        //A session must be started in order for Google' oauth2callback to work
+        session_start();
+
+        //Get our config object and fetch our firebase-admin-credentials.json file
+        $config = require dirname(__FILE__, 2) . '/config.php';
+
+        $client = new Google_Client();
+        $client->setAuthConfig($config->credentialsFile);
+
+        //If we have an access_token then we can render the page. Else we redirect to our oauth2callback endpoint.
+        if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+            $client->setAccessToken($_SESSION['access_token']);
+            return $app->view->render($response, $path, $args);
+        } else {
+            return $response->withRedirect('/oauth2callback');
+        }
+    }
 }

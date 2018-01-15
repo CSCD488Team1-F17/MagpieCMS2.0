@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 
 <head>
@@ -14,7 +16,6 @@
   <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-messaging.js"></script>
 
-
   <title>The Magpie App</title>
 
   <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400" rel="stylesheet">
@@ -29,99 +30,139 @@
   <link rel="stylesheet" href="css/styles.css">
 
 
-  <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
+  <script type="text/javascript">
+      // FirebaseUI config.
+      var config = {
+          apiKey: "AIzaSyDoEaVyRVUmX7Ij-OxiiqVlUkaUYDPiMgo",
+          authDomain: "magpie-3d047.firebaseapp.com",
+          databaseURL: "https://magpie-3d047.firebaseio.com",
+          projectId: "magpie-3d047",
+          storageBucket: "magpie-3d047.appspot.com",
+          messagingSenderId: "955947345618"
+      };
+      firebase.initializeApp(config);
+
+
+      var provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+
+      firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+              // User is signed in.
+              /*var displayName = user.displayName;
+              var email = user.email;
+              var emailVerified = user.emailVerified;
+              var photoURL = user.photoURL;
+              var isAnonymous = user.isAnonymous;
+              var uid = user.uid;
+              var providerData = user.providerData; */
+              // ...
+          } else {
+              // User is signed out.
+              // ...
+          }
+      });
+
+      function toggleSignIn() {
+          if (!firebase.auth().currentUser) {
+              // [START createprovider]
+              var provider = new firebase.auth.GoogleAuthProvider();
+              // [END createprovider]
+              // [START addscopes]
+              provider.addScope('https://www.googleapis.com/auth/plus.login');
+              // [END addscopes]
+              // [START signin]
+              firebase.auth().signInWithRedirect(provider);
+              // [END signin]
+          } else {
+              // [START signout]
+              firebase.auth().signOut();
+              // [END signout]
+          }
+          // [START_EXCLUDE]
+          document.getElementById('quickstart-sign-in').disabled = true;
+          // [END_EXCLUDE]
+      }
+
+      function initApp() {
+          // Result from Redirect auth flow.
+          // [START getidptoken]
+          firebase.auth().getRedirectResult().then(function(result) {
+              if (result.credential) {
+                  //window.location = "/welcome";
+
+                  // This gives you a Google Access Token. You can use it to access the Google API.
+                  var token = result.credential.accessToken;
+                  // [START_EXCLUDE]
+                  document.getElementById('quickstart-oauthtoken').textContent = token;
+              } else {
+                  document.getElementById('quickstart-oauthtoken').textContent = 'null';
+                  // [END_EXCLUDE]
+              }
+              // The signed-in user info.
+              var user = result.user;
+          }).catch(function(error) {
+              // Handle Errors here.
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // The email of the user's account used.
+              var email = error.email;
+              // The firebase.auth.AuthCredential type that was used.
+              var credential = error.credential;
+              // [START_EXCLUDE]
+              if (errorCode === 'auth/account-exists-with-different-credential') {
+                  alert('You have already signed up with a different auth provider for that email.');
+                  // If you are using multiple auth providers on your app you should handle linking
+                  // the user's accounts here.
+              } else {
+                  console.error(error);
+              }
+              // [END_EXCLUDE]
+          });
+          // [END getidptoken]
+          // Listening for auth state changes.
+          // [START authstatelistener]
+          firebase.auth().onAuthStateChanged(function(user) {
+              if (user) {
+                  // User is signed in.
+                  var displayName = user.displayName;
+                  var email = user.email;
+                  var emailVerified = user.emailVerified;
+                  var photoURL = user.photoURL;
+                  var isAnonymous = user.isAnonymous;
+                  var uid = user.uid;
+                  var providerData = user.providerData;
+                  // [START_EXCLUDE]
+                  document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
+                  document.getElementById('quickstart-sign-in').textContent = 'Sign out';
+                  document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
+                  // [END_EXCLUDE]
+              } else {
+                  // User is signed out.
+                  // [START_EXCLUDE]
+                 /* document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
+                  document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';
+                  document.getElementById('quickstart-account-details').textContent = 'null';
+                  document.getElementById('quickstart-oauthtoken').textContent = 'null'; */
+                  // [END_EXCLUDE]
+              }
+              // [START_EXCLUDE]
+              document.getElementById('quickstart-sign-in').disabled = false;
+              // [END_EXCLUDE]
+          });
+          // [END authstatelistener]
+          document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
+      }
+      window.onload = function() {
+          initApp();
+      };
+
+  </script>
+
 
 
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script>
-            // Initialize Firebase
-            var config = {
-                apiKey: "AIzaSyDoEaVyRVUmX7Ij-OxiiqVlUkaUYDPiMgo",
-                authDomain: "magpie-3d047.firebaseapp.com",
-                databaseURL: "https://magpie-3d047.firebaseio.com",
-                projectId: "magpie-3d047",
-                storageBucket: "magpie-3d047.appspot.com",
-                messagingSenderId: "955947345618"
-            };
-            firebase.initializeApp(config);
-
-            var provider = new firebase.auth.GoogleAuthProvider();
-
-            firebase.auth().useDeviceLanguage();
-
-            provider.setCustomParameters({
-                'login_hint': 'user@example.com'
-            });
-
-            /*firebase.auth().signInWithPopup(provider).then(function (result) {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                var token = result.credential.accessToken;
-                // The signed-in user info.
-                var user = result.user;
-                alert(user.valueOf());
-                // ...
-            }).catch(function (error) {
-                // Handle Errors here.
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                // The email of the user's account used.
-                var email = error.email;
-                // The firebase.auth.AuthCredential type that was used.
-                var credential = error.credential;
-                // ...
-            });*/
-        function onSignIn(googleUser) {
-            console.log('Google Auth Response', googleUser);
-            // We need to register an Observer on Firebase Auth to make sure auth is initialized.
-            var unsubscribe = firebase.auth().onAuthStateChanged(function(firebaseUser) {
-                unsubscribe();
-                // Check if we are already signed-in Firebase with the correct user.
-                if (!isUserEqual(googleUser, firebaseUser)) {
-                    // Build Firebase credential with the Google ID token.
-                    var credential = firebase.auth.GoogleAuthProvider.credential(
-                        googleUser.getAuthResponse().id_token);
-                    // Sign in with credential from the Google user.
-                    firebase.auth().signInWithCredential(credential).catch(function(error) {
-                        // Handle Errors here.
-                        var errorCode = error.code;
-                        var errorMessage = error.message;
-                        // The email of the user's account used.
-                        var email = error.email;
-                        // The firebase.auth.AuthCredential type that was used.
-                        var credential = error.credential;
-                        // ...
-                    });
-                } else {
-                    console.log('User already signed-in Firebase.');
-                }
-            });
-        }
-        function isUserEqual(googleUser, firebaseUser) {
-            if (firebaseUser) {
-                var providerData = firebaseUser.providerData;
-                for (var i = 0; i < providerData.length; i++) {
-                    if (providerData[i].providerId === firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
-                        providerData[i].uid === googleUser.getBasicProfile().getId()) {
-                        // We don't need to reauth the Firebase connection.
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-        function signOut(){
-            firebase.auth().signOut().then(function() {
-                // Sign-out successful.
-            }).catch(function(error) {
-                // An error happened.
-            });
-        }
-    </script>
-  <!--<script src="js/login2.js"></script>-->
-
-
+ <!-- <script src="js/login2.js"></script> -->
 </head>
 
 <body>
@@ -131,11 +172,32 @@
     <div id="content">
       <img src="img/mglogo2.png" alt="Magpie Birdhouse">
       <h1>Login or Create an Account</h1>
-      <center>
-        <div id="signIn" class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-          <a href="#" onclick="signOut();">Sign out</a>
-      </center>
-      <div id="userInfo"></div>
+      <main class="mdl-layout__content mdl-color--grey-100">
+        <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+
+          <!-- Container for the demo -->
+          <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+            <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
+              <h2 class="mdl-card__title-text">Google Authentication with Redirect</h2>
+            </div>
+            <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+              <p>Sign in with your Google account below.</p>
+
+              <!-- Button that handles sign-in/sign-out -->
+              <button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in with Google</button>
+
+              <!-- Container where we'll display the user details -->
+              <div class="quickstart-user-details-container">
+                Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
+                <div>Firebase auth <code>currentUser</code> object value:</div>
+                <pre><code id="quickstart-account-details">null</code></pre>
+                <div>Google OAuth Access Token:</div>
+                <pre><code id="quickstart-oauthtoken">null</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
     <div id="footer">
       <p>copyright 2017</p>

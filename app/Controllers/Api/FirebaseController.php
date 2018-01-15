@@ -47,5 +47,10 @@ class FirebaseController extends Controller
     {
         return $this->firebase;
     }
+    public function authFirebase()
+    {
+        $auth = $this->firebase->getAuth();
+     //   $verify = $auth->verifyIdToken($auth->)
+    }
 
 }

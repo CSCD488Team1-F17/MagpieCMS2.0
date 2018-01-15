@@ -14,9 +14,6 @@ use Magpiehunt\Controllers\Controller as Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-$config = require __DIR__ . '/../../../bootstrap/config.php';
-
-
 class DatabaseController extends Controller
 {
 
@@ -25,52 +22,79 @@ class DatabaseController extends Controller
         parent::__construct($container);
     }
 
-    function connect_db(){
-        $config = require __DIR__ . '/../../../bootstrap/config.php';
-        $server = $config->server;
-        //echo $server;
-        $user = $config->username;
-        //echo $user;
-        $pass = $config->password;
-        //echo $pass;
-        $database = $config->database;
-        //echo $database;
-        $connection = new PDO("mysql:host=" . $server . ";dbname=" . $database, $user, $pass);
-        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-
-        return $connection;
-    }
-    //gets all collections
-    function collectionPull(ServerRequestInterface $request){
-        $ara = array();
-        $conn = $this->connect_db();
-        $query = "SELECT * FROM Collections WHERE Available = 1";
-        $output = $conn->prepare($query);
+    function getLandmarkImages(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $lid = (int)$request->getAttribute('lid');
+        $dbconn = new DBConnection($this->container);
+        $conn = $dbconn->connect_db();
+        $output = $conn->prepare("SELECT * FROM LandmarksImages WHERE lid = $lid ORDER BY 'LID' asc");
         $output->execute();
-        /*while($row = $output->fetchObject()) {
-            $ara[] = $row;
-        }*/
         $res = $output->fetchAll();
         echo json_encode($res);
         $conn = null;
     }
-    //gets all landmarks with given cid
-    function landmarkPull( ServerRequestInterface $request, ResponseInterface $response, $args)
+    function getCollectionImages(ServerRequestInterface $request, ResponseInterface $response)
     {
         $cid = (int)$request->getAttribute('cid');
         $ara = array();
-        $conn = $this->connect_db();
-        $output = $conn->prepare("SELECT * FROM Landmarks WHERE cid = :cid ORDER BY 'Order' asc");
-        $output->bindParam("cid", $args['cid']);
+        $dbconn = new DBConnection($this->container);
+        $conn = $dbconn->connect_db();
+        $output = $conn->prepare("SELECT * FROM CollectionImages WHERE cid = $cid ORDER BY 'LID' asc");
         $output->execute();
         $res = $output->fetchAll();
         echo json_encode($res);
         $conn = null;
     }
-    function landmarkImg($request)
+    function getAwards(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $lid = (int)$request->getParam('lid');
+        $cid = (int)$request->getAttribute('cid');
+        $ara = array();
+        $dbconn = new DBConnection($this->container);
+        $conn = $dbconn->connect_db();
+        $output = $conn->prepare("SELECT * FROM Awards WHERE cid = $cid ORDER BY 'LID' asc");
+        $output->execute();
+        $res = $output->fetchAll();
+        echo json_encode($res);
+        $conn = null;
+    }
+
+    function addCollectionImage(ServerRequestInterface $request, ResponseInterface $response)
+    {
 
     }
+    function addLandmarkImage(ServerRequestInterface $request, ResponseInterface $response)
+    {
+
+    }
+    function addCollectionOwner(ServerRequestInterface $request, ResponseInterface $response)
+    {
+
+    }
+
+    function uploadImage(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $files = $request->getUploadedFiles();
+
+        if(empty($files['file']))
+        {
+            throw new \RuntimeException('Expected a new file');
+        }
+        $file = $files['file'];
+        if($file->getError() === UPLOAD_ERR_OK)
+        {
+            $fileName = $file->getClientFilename();
+            $file = moveTo(storage_path("/images/{$fileName}"));
+
+            return $response->withJson(['result' => [
+                'fileName' => $fileName
+            ]])->withStatus(200);
+        }
+
+        return $response
+            ->withJson([
+                'error' => 'Nothing was uploaded'
+            ])
+            ->withStatus(415);
+    }
+
 }
