@@ -24,8 +24,8 @@ class CollectionController extends DatabaseController
         $output = $conn->prepare($query);
         $output->execute();
         $res = $output->fetchAll();
-        $arr = array("result_type" => 'Collection', "Collections"=>$res);
-        echo json_encode($arr, JSON_PRETTY_PRINT);
+        //$arr = array("result_type" => 'Collection', "Collections"=>$res);
+        echo json_encode($res, JSON_PRETTY_PRINT);
         $conn = null;
     }
     function getCollection(ServerRequestInterface $request){
@@ -36,8 +36,8 @@ class CollectionController extends DatabaseController
         $output = $conn->prepare($query);
         $output->execute();
         $res = $output->fetch();
-        $arr = array("result_type" => 'Collection', "Collections"=>$res);
-        echo json_encode($arr);
+        //$arr = array("result_type" => 'Collection', "Collections"=>$res);
+        echo json_encode($res);
         $conn = null;
     }
     function collectionDisable(ServerRequestInterface $request, ResponseInterface $response)
@@ -103,25 +103,6 @@ class CollectionController extends DatabaseController
         $output = $conn->prepare($query);
         $output->execute([$avail, $name, $city, $state, $zip, $rating, $desc, $ord, $abv, $sponsor]);
         $conn = null;
-    }
-
-    public function numCollections(ServerRequestInterface $request, ResponseInterface $response)
-    {
-        $dbconn = new DBConnection($this->container);
-        $conn = $dbconn->connect_db();
-
-        $query = "SELECT * FROM Collections WHERE Available = 1";
-        $output = $conn->prepare($query);
-        $output->execute();
-        $res = $output->fetchAll();
-        if($output != false)
-        {
-            $noRows = count($res);
-            echo $noRows;
-        }
-        else
-            $noRows = 0;
-
     }
 
 }
