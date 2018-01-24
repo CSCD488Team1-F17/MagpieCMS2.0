@@ -23,9 +23,9 @@ class LandmarkController extends DatabaseController
         $output = $conn->prepare("SELECT * FROM Landmarks WHERE cid = $cid ORDER BY 'Order' asc");
         $output->execute();
         $res = $output->fetchAll();
-        $arr = array("result_type" => 'Landmark', "Landmarks"=>$res);
+        //$arr = array("result_type" => 'Landmark', "Landmarks"=>$res);
 
-        echo json_encode($arr);
+        echo json_encode($res);
         $conn = null;
     }
     //TODO: Error checking and default values
